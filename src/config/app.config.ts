@@ -1,6 +1,7 @@
 export const appConfig = {
   name: "OpenSuite",
   description: "Enterprise frontend boilerplate for OpenSuite ecosystem apps.",
-  activeAuthPage: "LoginV1",
+  activeAuthPage: "LoginV2",
   activeDashboardPage: "DashboardHomeV1",
+  activeFinanceHomePage: "DashboardHomeV2",
 } as const;

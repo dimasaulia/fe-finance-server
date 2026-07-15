@@ -14,14 +14,20 @@ import {
   type TranslationKey,
 } from "./dictionaries";
 
+export type Theme = "light" | "dark" | "auto";
+
 type PreferencesContextValue = {
   language: Language;
   setLanguage: (language: Language) => void;
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
   t: (key: TranslationKey) => string;
 };
 
 const DEFAULT_LANGUAGE: Language = "en";
+const DEFAULT_THEME: Theme = "auto";
 const LANGUAGE_STORAGE_KEY = "opensuite.language";
+const THEME_STORAGE_KEY = "opensuite.theme";
 
 const PreferencesContext = createContext<PreferencesContextValue | null>(null);
 const listeners = new Set<() => void>();
@@ -34,6 +40,10 @@ function isLanguage(value: string | null): value is Language {
   return value === "en" || value === "id";
 }
 
+function isTheme(value: string | null): value is Theme {
+  return value === "light" || value === "dark" || value === "auto";
+}
+
 function getStoredLanguage() {
   if (typeof window === "undefined") {
     return DEFAULT_LANGUAGE;
@@ -44,11 +54,21 @@ function getStoredLanguage() {
   return isLanguage(storedLanguage) ? storedLanguage : DEFAULT_LANGUAGE;
 }
 
+function getStoredTheme() {
+  if (typeof window === "undefined") {
+    return DEFAULT_THEME;
+  }
+
+  const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+
+  return isTheme(storedTheme) ? storedTheme : DEFAULT_THEME;
+}
+
 function subscribeToPreferences(listener: () => void) {
   listeners.add(listener);
 
   function handleStorageEvent(event: StorageEvent) {
-    if (event.key === LANGUAGE_STORAGE_KEY) {
+    if (event.key === LANGUAGE_STORAGE_KEY || event.key === THEME_STORAGE_KEY) {
       listener();
     }
   }
@@ -71,10 +91,23 @@ export function PreferencesProvider({ children }: PreferencesProviderProps) {
     getStoredLanguage,
     () => DEFAULT_LANGUAGE,
   );
+  const theme = useSyncExternalStore(
+    subscribeToPreferences,
+    getStoredTheme,
+    () => DEFAULT_THEME,
+  );
 
   useEffect(() => {
     document.documentElement.lang = language;
   }, [language]);
+
+  useEffect(() => {
+    if (theme === "auto") {
+      delete document.documentElement.dataset.theme;
+    } else {
+      document.documentElement.dataset.theme = theme;
+    }
+  }, [theme]);
 
   const value = useMemo<PreferencesContextValue>(
     () => ({
@@ -83,9 +116,14 @@ export function PreferencesProvider({ children }: PreferencesProviderProps) {
         window.localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLanguage);
         emitPreferenceChange();
       },
+      theme,
+      setTheme: (nextTheme) => {
+        window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+        emitPreferenceChange();
+      },
       t: (key) => dictionaries[language][key],
     }),
-    [language],
+    [language, theme],
   );
 
   return (

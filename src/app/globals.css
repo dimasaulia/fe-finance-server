@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+/*
+ * Central theme tokens. One source of truth for every color used across the
+ * app — swap a value here and every component using the matching Tailwind
+ * utility (bg-surface, text-brand-700, border-glass, ...) updates with it.
+ *
+ * Resolution order for dark mode:
+ *   1. :root                          -> light defaults
+ *   2. prefers-color-scheme: dark     -> "auto" theme + system is dark
+ *   3. [data-theme="dark"|"light"]    -> explicit user choice, always wins
+ */
 :root {
   --background: #f6f4ee;
   --foreground: #161513;
@@ -9,6 +19,94 @@
   --accent: #256f61;
   --accent-foreground: #ffffff;
   --warning: #c56b32;
+
+  /* Finance app palette (Aurora Glass) */
+  --surface: #ffffff;
+  --surface-glass: rgba(255, 255, 255, 0.75);
+  --surface-sheet: #f7fbf9;
+  --border-glass: rgba(255, 255, 255, 0.9);
+  --border-subtle: #e2f1ea;
+  --text-primary: #06342a;
+  --text-secondary: #4e7a6b;
+  --text-tertiary: #7c9b8e;
+  --brand-300: #a7f3d0;
+  --brand-500: #10b981;
+  --brand-600: #0d9488;
+  --brand-700: #047857;
+  --brand-900: #064e3b;
+  --info: #0284c7;
+  --danger: #e11d48;
+  --danger-bg: #fff5f5;
+  --danger-border: #fecdd3;
+  --app-bg: #edf5f0;
+  --card-bg: #f2fbf7;
+  --scrim: rgba(4, 35, 26, 0.45);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: #0b1512;
+    --foreground: #e6f5ee;
+    --muted: #8fae9f;
+    --line: #1e332c;
+    --panel: #101f1a;
+    --accent: #34d399;
+    --accent-foreground: #04231a;
+    --warning: #f0a860;
+
+    --surface: #0e211b;
+    --surface-glass: rgba(20, 40, 34, 0.6);
+    --surface-sheet: #0c201a;
+    --border-glass: rgba(255, 255, 255, 0.08);
+    --border-subtle: rgba(255, 255, 255, 0.1);
+    --text-primary: #e6f5ee;
+    --text-secondary: #9fc3b4;
+    --text-tertiary: #6b8f82;
+    --brand-300: #6ee7b7;
+    --brand-500: #34d399;
+    --brand-600: #2dd4bf;
+    --brand-700: #10b981;
+    --brand-900: #a7f3d0;
+    --info: #38bdf8;
+    --danger: #fb7185;
+    --danger-bg: rgba(251, 113, 133, 0.12);
+    --danger-border: rgba(251, 113, 133, 0.35);
+    --app-bg: #071a15;
+    --card-bg: #0c201a;
+    --scrim: rgba(0, 0, 0, 0.55);
+  }
+}
+
+:root[data-theme="dark"] {
+  --background: #0b1512;
+  --foreground: #e6f5ee;
+  --muted: #8fae9f;
+  --line: #1e332c;
+  --panel: #101f1a;
+  --accent: #34d399;
+  --accent-foreground: #04231a;
+  --warning: #f0a860;
+
+  --surface: #0e211b;
+  --surface-glass: rgba(20, 40, 34, 0.6);
+  --surface-sheet: #0c201a;
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --text-primary: #e6f5ee;
+  --text-secondary: #9fc3b4;
+  --text-tertiary: #6b8f82;
+  --brand-300: #6ee7b7;
+  --brand-500: #34d399;
+  --brand-600: #2dd4bf;
+  --brand-700: #10b981;
+  --brand-900: #a7f3d0;
+  --info: #38bdf8;
+  --danger: #fb7185;
+  --danger-bg: rgba(251, 113, 133, 0.12);
+  --danger-border: rgba(251, 113, 133, 0.35);
+  --app-bg: #071a15;
+  --card-bg: #0c201a;
+  --scrim: rgba(0, 0, 0, 0.55);
 }
 
 @theme inline {
@@ -20,16 +118,94 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-warning: var(--warning);
+
+  --color-surface: var(--surface);
+  --color-surface-glass: var(--surface-glass);
+  --color-surface-sheet: var(--surface-sheet);
+  --color-border-glass: var(--border-glass);
+  --color-border-subtle: var(--border-subtle);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-brand-300: var(--brand-300);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+  --color-brand-700: var(--brand-700);
+  --color-brand-900: var(--brand-900);
+  --color-info: var(--info);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-danger-border: var(--danger-border);
+  --color-app-bg: var(--app-bg);
+  --color-card-bg: var(--card-bg);
+  --color-scrim: var(--scrim);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-space-grotesk);
+  --font-numeric: var(--font-jetbrains-mono);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+@keyframes blob-float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(14px, -18px) scale(1.08);
+  }
+}
+
+@keyframes blob-float-alt {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-16px, 12px) scale(1.12);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(70px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

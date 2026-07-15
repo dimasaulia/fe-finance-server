@@ -8,6 +8,11 @@ export const fallbackMenu: AppMenuItem[] = [
     permission: "dashboard.view",
   },
   {
+    label: "Home (mobile)",
+    href: routes.financeHome,
+    permission: "dashboard.view",
+  },
+  {
     label: "Users",
     href: routes.users,
     permission: "user.list",
