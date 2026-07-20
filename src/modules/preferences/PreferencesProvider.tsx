@@ -26,8 +26,8 @@ type PreferencesContextValue = {
 
 const DEFAULT_LANGUAGE: Language = "en";
 const DEFAULT_THEME: Theme = "auto";
-const LANGUAGE_STORAGE_KEY = "opensuite.language";
-const THEME_STORAGE_KEY = "opensuite.theme";
+const LANGUAGE_STORAGE_KEY = "finapp.language";
+const THEME_STORAGE_KEY = "finapp.theme";
 
 const PreferencesContext = createContext<PreferencesContextValue | null>(null);
 const listeners = new Set<() => void>();

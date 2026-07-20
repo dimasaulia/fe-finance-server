@@ -1,21 +1,12 @@
 import { usePreferences } from "@/modules/preferences";
 import { GlassCard } from "@/shared/components/GlassCard";
-import { portfolios } from "../constants/portfolios.constant";
-
-function trendClassName(trendUp: boolean | null) {
-  if (trendUp === true) {
-    return "text-brand-700";
-  }
-
-  if (trendUp === false) {
-    return "text-danger";
-  }
-
-  return "text-text-tertiary";
-}
+import { formatCompactCurrency } from "@/shared/utils/currency";
+import { accountTypeVisuals } from "../constants/account-type.constant";
+import { useAccountList } from "../hooks/useAccountList";
 
 export function PortfolioList() {
   const { t } = usePreferences();
+  const { accounts, isLoading, error } = useAccountList();
 
   return (
     <div>
@@ -31,37 +22,51 @@ export function PortfolioList() {
         </a>
       </div>
       <div className="mt-3.5 flex flex-col gap-3">
-        {portfolios.map((portfolio) => (
-          <GlassCard
-            className="flex w-full items-center gap-3.5 p-4"
-            key={portfolio.id}
-          >
-            <div
-              className="flex h-12 w-12 flex-none items-center justify-center rounded-2xl text-xl"
-              style={{ background: portfolio.iconBg }}
-            >
-              {portfolio.emoji}
-            </div>
-            <div className="min-w-0 flex-1">
-              <div className="font-heading text-[15px] font-bold text-text-primary">
-                {portfolio.name}
-              </div>
-              <div className="mt-0.5 text-xs text-text-secondary">
-                {portfolio.sub}
-              </div>
-            </div>
-            <div className="text-right">
-              <div className="font-numeric text-[14.5px] font-bold text-text-primary">
-                {portfolio.amount}
-              </div>
-              <div
-                className={`mt-0.5 font-numeric text-[11.5px] font-bold ${trendClassName(portfolio.trendUp)}`}
+        {isLoading && (
+          <div className="text-xs text-text-secondary">
+            {t("home.portfolio.loading")}
+          </div>
+        )}
+        {!isLoading && error && (
+          <div className="text-xs text-danger">{t("home.portfolio.error")}</div>
+        )}
+        {!isLoading && !error && accounts.length === 0 && (
+          <div className="text-xs text-text-secondary">
+            {t("home.portfolio.empty")}
+          </div>
+        )}
+        {!isLoading &&
+          !error &&
+          accounts.map((account) => {
+            const visuals = accountTypeVisuals[account.type];
+
+            return (
+              <GlassCard
+                className="flex w-full items-center gap-3.5 p-4"
+                key={account.id_account}
               >
-                {portfolio.trend}
-              </div>
-            </div>
-          </GlassCard>
-        ))}
+                <div
+                  className="flex h-12 w-12 flex-none items-center justify-center rounded-2xl text-xl"
+                  style={{ background: visuals.iconBg }}
+                >
+                  {visuals.emoji}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="font-heading text-[15px] font-bold text-text-primary">
+                    {account.name}
+                  </div>
+                  <div className="mt-0.5 text-xs text-text-secondary">
+                    {t(`home.portfolio.type.${account.type}`)}
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="font-numeric text-[14.5px] font-bold text-text-primary">
+                    {formatCompactCurrency(account.balance)}
+                  </div>
+                </div>
+              </GlassCard>
+            );
+          })}
       </div>
     </div>
   );

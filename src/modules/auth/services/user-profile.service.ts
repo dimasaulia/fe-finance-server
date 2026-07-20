@@ -1,4 +1,4 @@
-export const USER_PROFILE_STORAGE_KEY = "opensuite.user";
+export const USER_PROFILE_STORAGE_KEY = "finapp.user";
 
 export type UserProfile = {
   username: string;

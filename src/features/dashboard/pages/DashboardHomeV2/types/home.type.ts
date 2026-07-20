@@ -6,15 +6,13 @@ export type Account = {
   balance: string;
 };
 
-export type Portfolio = {
-  id: string;
-  emoji: string;
-  iconBg: string;
+export type AccountApiType = "BANK" | "EWALLET" | "INVESTATION" | "OTHER";
+
+export type AccountRecord = {
+  id_account: number;
   name: string;
-  sub: string;
-  amount: string;
-  trend: string;
-  trendUp: boolean | null;
+  balance: number;
+  type: AccountApiType;
 };
 
 export type QuickActionId = "transfer" | "topUp" | "pay" | "more";

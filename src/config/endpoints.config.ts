@@ -12,4 +12,7 @@ export const endpoints = {
     list: "/users",
     detail: (id: string) => `/users/${id}`,
   },
+  account: {
+    list: "/api/account/v1",
+  },
 } as const;

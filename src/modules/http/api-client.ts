@@ -73,7 +73,7 @@ export async function apiClient<TResponse>(
     const token = getAuthToken();
 
     if (token) {
-      authHeaders.Authorization = `Bearer ${token}`;
+      authHeaders.Authorization = token;
     }
   }
 
