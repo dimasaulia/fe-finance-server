@@ -130,6 +130,8 @@ export const dictionaries = {
     "home.tx.notes": "NOTES",
     "home.tx.notesPlaceholder": "Add a note...",
     "home.tx.confirm": "Confirm Transaction",
+    "home.tx.confirming": "Processing...",
+    "home.tx.error": "Couldn't create the transaction. Please try again.",
   },
   id: {
     "common.language": "Bahasa",
@@ -262,6 +264,8 @@ export const dictionaries = {
     "home.tx.notes": "CATATAN",
     "home.tx.notesPlaceholder": "Tambah catatan...",
     "home.tx.confirm": "Konfirmasi Transaksi",
+    "home.tx.confirming": "Memproses...",
+    "home.tx.error": "Gagal membuat transaksi. Silakan coba lagi.",
   },
 } as const;
 

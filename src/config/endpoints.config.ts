@@ -16,4 +16,7 @@ export const endpoints = {
     list: "/api/account/v1",
     create: "/api/account/v1",
   },
+  transaction: {
+    create: "/api/transaction/v1/",
+  },
 } as const;

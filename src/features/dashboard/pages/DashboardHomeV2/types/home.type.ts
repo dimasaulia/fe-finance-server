@@ -1,11 +1,3 @@
-export type Account = {
-  id: string;
-  emoji: string;
-  iconBg: string;
-  name: string;
-  balance: string;
-};
-
 export type AccountApiType = "BANK" | "EWALLET" | "INVESTATION" | "OTHER";
 
 export type AccountRecord = {
@@ -32,5 +24,7 @@ export type CashFlowBar = {
 };
 
 export type TxType = "expense" | "income" | "transfer" | "receivable";
+
+export type TransactionType = "DEBIT" | "CREDIT";
 
 export type HomeSheet = "menu" | "profile" | "transaction" | "account" | null;

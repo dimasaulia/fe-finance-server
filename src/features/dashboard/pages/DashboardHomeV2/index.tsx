@@ -68,6 +68,7 @@ function DashboardHomeV2Content() {
       <ProfileSheet onClose={sheets.close} open={sheets.activeSheet === "profile"} />
       <AddTransactionSheet
         onClose={sheets.close}
+        onCreated={() => setAccountsRefreshKey((key) => key + 1)}
         onTxTypeChange={sheets.setTxType}
         open={sheets.activeSheet === "transaction"}
         txType={sheets.txType}

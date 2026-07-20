@@ -3,7 +3,7 @@ import { BottomSheet } from "@/shared/components/BottomSheet";
 import { CloseIcon } from "@/shared/components/icons";
 import { IconButton } from "@/shared/components/IconButton";
 import { SegmentedControl } from "@/shared/components/SegmentedControl";
-import { categoryChips } from "../constants/accounts.constant";
+import { categoryChips } from "../constants/category.constant";
 import { useAddTransactionForm } from "../hooks/useAddTransactionForm";
 import type { TxType } from "../types/home.type";
 import { AccountPickerField } from "./AccountPickerField";
@@ -13,6 +13,7 @@ type AddTransactionSheetProps = {
   onClose: () => void;
   txType: TxType;
   onTxTypeChange: (type: TxType) => void;
+  onCreated: () => void;
 };
 
 const txTypeLabelKeys: Record<TxType, TranslationKey> = {
@@ -34,9 +35,13 @@ export function AddTransactionSheet({
   onClose,
   txType,
   onTxTypeChange,
+  onCreated,
 }: AddTransactionSheetProps) {
   const { t } = usePreferences();
-  const form = useAddTransactionForm(txType, onTxTypeChange);
+  const form = useAddTransactionForm(txType, onTxTypeChange, () => {
+    onCreated();
+    onClose();
+  });
 
   const txTypeOptions = (Object.keys(txTypeLabelKeys) as TxType[]).map(
     (value) => ({ value, label: t(txTypeLabelKeys[value]) }),
@@ -92,17 +97,16 @@ export function AddTransactionSheet({
           <div className="mx-auto mt-2 h-[3px] w-[110px] rounded-full bg-brand-500/35" />
         </div>
 
-        {form.showFromAccount && (
-          <AccountPickerField
-            labelKey={
-              form.txType === "income" ? "home.tx.toAccount" : "home.tx.fromAccount"
-            }
-            onSelect={form.selectFromAccount}
-            onToggle={() => form.setFromPickerOpen(!form.fromPickerOpen)}
-            open={form.fromPickerOpen}
-            selected={form.fromAccount}
-          />
-        )}
+        <AccountPickerField
+          accounts={form.accounts}
+          labelKey={
+            form.txType === "income" ? "home.tx.toAccount" : "home.tx.fromAccount"
+          }
+          onSelect={form.selectFromAccount}
+          onToggle={() => form.setFromPickerOpen(!form.fromPickerOpen)}
+          open={form.fromPickerOpen}
+          selected={form.fromAccount}
+        />
 
         {form.showTargetAccount && form.isReceivableTarget && (
           <div className="mt-7">
@@ -127,6 +131,7 @@ export function AddTransactionSheet({
 
         {form.showTargetAccount && !form.isReceivableTarget && (
           <AccountPickerField
+            accounts={form.targetAccountOptions}
             labelKey="home.tx.targetAccount"
             onSelect={form.selectTargetAccount}
             onToggle={() => form.setTargetPickerOpen(!form.targetPickerOpen)}
@@ -239,12 +244,18 @@ export function AddTransactionSheet({
       </div>
 
       <div className="absolute inset-x-5 bottom-4.5 z-5">
+        {form.error && (
+          <div className="mb-2.5 text-center text-xs text-danger">
+            {t("home.tx.error")}
+          </div>
+        )}
         <button
-          className="flex w-full items-center justify-center gap-2.5 rounded-full bg-gradient-to-b from-brand-500 to-brand-600 p-4.5 text-[15px] font-bold text-white shadow-[inset_0_1.5px_0_rgba(255,255,255,0.45),inset_0_-3px_6px_rgba(6,78,59,0.35),0_16px_32px_-10px_rgba(13,148,136,0.55)] transition-transform active:scale-[0.97]"
-          onClick={handleClose}
+          className="flex w-full items-center justify-center gap-2.5 rounded-full bg-gradient-to-b from-brand-500 to-brand-600 p-4.5 text-[15px] font-bold text-white shadow-[inset_0_1.5px_0_rgba(255,255,255,0.45),inset_0_-3px_6px_rgba(6,78,59,0.35),0_16px_32px_-10px_rgba(13,148,136,0.55)] transition-transform active:scale-[0.97] disabled:opacity-50"
+          disabled={!form.canSubmit || form.isSubmitting}
+          onClick={() => form.submit()}
           type="button"
         >
-          {t("home.tx.confirm")}
+          {form.isSubmitting ? t("home.tx.confirming") : t("home.tx.confirm")}
           <svg
             fill="none"
             height="17"
