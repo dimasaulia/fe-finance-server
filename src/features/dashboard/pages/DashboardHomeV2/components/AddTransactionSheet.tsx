@@ -1,9 +1,9 @@
+import { categoryChips } from "@/features/dashboard/constants/category.constant";
 import { usePreferences, type TranslationKey } from "@/modules/preferences";
 import { BottomSheet } from "@/shared/components/BottomSheet";
 import { CloseIcon } from "@/shared/components/icons";
 import { IconButton } from "@/shared/components/IconButton";
 import { SegmentedControl } from "@/shared/components/SegmentedControl";
-import { categoryChips } from "../constants/category.constant";
 import { useAddTransactionForm } from "../hooks/useAddTransactionForm";
 import type { TxType } from "../types/home.type";
 import { AccountPickerField } from "./AccountPickerField";

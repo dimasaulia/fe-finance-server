@@ -1,26 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { createAccount } from "@/features/dashboard/services/account.service";
-import type { AccountApiType } from "@/features/dashboard/types/account.type";
+import { updateAccount } from "@/features/dashboard/services/account.service";
+import type {
+  AccountApiType,
+  AccountRecord,
+} from "@/features/dashboard/types/account.type";
 
-const DEFAULT_TYPE: AccountApiType = "BANK";
-
-export function useAddAccountForm(onCreated: () => void) {
-  const [name, setName] = useState("");
-  const [balance, setBalance] = useState("");
-  const [type, setType] = useState<AccountApiType>(DEFAULT_TYPE);
+export function useEditAccountForm(
+  account: AccountRecord,
+  onUpdated: () => void,
+) {
+  const [name, setName] = useState(account.name);
+  const [balance, setBalance] = useState(String(account.balance));
+  const [type, setType] = useState<AccountApiType>(account.type);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const canSubmit = name.trim().length > 0 && balance.trim().length > 0;
-
-  function reset() {
-    setName("");
-    setBalance("");
-    setType(DEFAULT_TYPE);
-    setError(null);
-  }
 
   async function submit() {
     if (!canSubmit || isSubmitting) {
@@ -31,15 +28,15 @@ export function useAddAccountForm(onCreated: () => void) {
     setError(null);
 
     try {
-      await createAccount({
+      await updateAccount({
+        idAccount: account.id_account,
         name: name.trim(),
         balance: Number(balance),
         type,
       });
-      reset();
-      onCreated();
+      onUpdated();
     } catch {
-      setError("Failed to create account");
+      setError("Failed to update account");
     } finally {
       setIsSubmitting(false);
     }
@@ -56,6 +53,5 @@ export function useAddAccountForm(onCreated: () => void) {
     isSubmitting,
     error,
     submit,
-    reset,
   };
 }

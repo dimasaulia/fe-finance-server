@@ -1,8 +1,8 @@
+import { accountTypeVisuals } from "@/features/dashboard/constants/account-type.constant";
+import type { AccountRecord } from "@/features/dashboard/types/account.type";
 import { usePreferences } from "@/modules/preferences";
 import { ChevronDownIcon } from "@/shared/components/icons";
 import { formatCompactCurrency } from "@/shared/utils/currency";
-import { accountTypeVisuals } from "../constants/account-type.constant";
-import type { AccountRecord } from "../types/home.type";
 
 type AccountPickerFieldProps = {
   labelKey: "home.tx.fromAccount" | "home.tx.toAccount" | "home.tx.targetAccount";

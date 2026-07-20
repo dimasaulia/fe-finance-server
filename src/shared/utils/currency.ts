@@ -1,3 +1,7 @@
+export function formatCurrency(amount: number): string {
+  return `Rp ${new Intl.NumberFormat("id-ID").format(amount)}`;
+}
+
 export function formatCompactCurrency(amount: number): string {
   const abs = Math.abs(amount);
 

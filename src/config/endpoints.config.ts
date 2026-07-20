@@ -15,8 +15,14 @@ export const endpoints = {
   account: {
     list: "/api/account/v1",
     create: "/api/account/v1",
+    update: "/api/account/v1",
+    delete: (id: number) => `/api/account/v1/${id}`,
   },
   transaction: {
+    list: "/api/transaction/v1/",
     create: "/api/transaction/v1/",
+  },
+  subTransaction: {
+    create: "/api/sub-transaction/v1/",
   },
 } as const;

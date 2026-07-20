@@ -1,8 +1,10 @@
+import { useRouter } from "next/navigation";
+import { accountTypeVisuals } from "@/features/dashboard/constants/account-type.constant";
+import { useAccountList } from "@/features/dashboard/hooks/useAccountList";
 import { usePreferences } from "@/modules/preferences";
+import { routes } from "@/config/routes.config";
 import { GlassCard } from "@/shared/components/GlassCard";
 import { formatCompactCurrency } from "@/shared/utils/currency";
-import { accountTypeVisuals } from "../constants/account-type.constant";
-import { useAccountList } from "../hooks/useAccountList";
 
 type PortfolioListProps = {
   refreshKey?: number;
@@ -10,6 +12,7 @@ type PortfolioListProps = {
 
 export function PortfolioList({ refreshKey = 0 }: PortfolioListProps) {
   const { t } = usePreferences();
+  const router = useRouter();
   const { accounts, isLoading, error } = useAccountList(refreshKey);
 
   return (
@@ -48,6 +51,9 @@ export function PortfolioList({ refreshKey = 0 }: PortfolioListProps) {
               <GlassCard
                 className="flex w-full items-center gap-3.5 p-4"
                 key={account.id_account}
+                onClick={() =>
+                  router.push(routes.accountDetail(account.id_account))
+                }
               >
                 <div
                   className="flex h-12 w-12 flex-none items-center justify-center rounded-2xl text-xl"

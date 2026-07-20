@@ -1,41 +1,26 @@
-import { accountTypeVisuals } from "@/features/dashboard/constants/account-type.constant";
-import type { AccountApiType } from "@/features/dashboard/types/account.type";
-import { usePreferences, type TranslationKey } from "@/modules/preferences";
+import { categoryChips } from "@/features/dashboard/constants/category.constant";
+import { usePreferences } from "@/modules/preferences";
 import { BottomSheet } from "@/shared/components/BottomSheet";
 import { CloseIcon } from "@/shared/components/icons";
 import { IconButton } from "@/shared/components/IconButton";
-import { useAddAccountForm } from "../hooks/useAddAccountForm";
+import { SegmentedControl } from "@/shared/components/SegmentedControl";
+import { useAddSubTransactionForm } from "../hooks/useAddSubTransactionForm";
 
-type AddAccountSheetProps = {
+type AddSubTransactionSheetProps = {
   open: boolean;
+  parentTransactionId: number | null;
   onClose: () => void;
   onCreated: () => void;
 };
 
-const accountTypeOrder: AccountApiType[] = [
-  "BANK",
-  "EWALLET",
-  "INVESTATION",
-  "OTHER",
-];
-
-const accountTypeLabelKeys: Record<AccountApiType, TranslationKey> = {
-  BANK: "home.portfolio.type.BANK",
-  EWALLET: "home.portfolio.type.EWALLET",
-  INVESTATION: "home.portfolio.type.INVESTATION",
-  OTHER: "home.portfolio.type.OTHER",
-};
-
-export function AddAccountSheet({
+export function AddSubTransactionSheet({
   open,
+  parentTransactionId,
   onClose,
   onCreated,
-}: AddAccountSheetProps) {
+}: AddSubTransactionSheetProps) {
   const { t } = usePreferences();
-  const form = useAddAccountForm(() => {
-    onCreated();
-    onClose();
-  });
+  const form = useAddSubTransactionForm(parentTransactionId, onCreated);
 
   function handleClose() {
     form.reset();
@@ -50,7 +35,7 @@ export function AddAccountSheet({
     >
       <div className="mt-4 flex items-center justify-between">
         <div className="text-[19px] font-bold text-text-primary">
-          {t("home.addAccount.title")}
+          {t("account.detail.addSub.title")}
         </div>
         <IconButton ariaLabel="Close" onClick={handleClose} size={36}>
           <CloseIcon size={14} />
@@ -58,19 +43,43 @@ export function AddAccountSheet({
       </div>
 
       <div className="mt-5 text-[11px] font-bold tracking-[2px] text-text-secondary">
-        {t("home.addAccount.name")}
+        {t("account.detail.addSub.description")}
       </div>
       <div className="mt-2.5 flex items-center gap-2.5 rounded-[20px] border border-border-subtle bg-surface px-3.5">
         <input
           className="flex-1 border-none bg-transparent py-3.5 font-numeric text-[13px] text-text-primary outline-none"
-          onChange={(event) => form.setName(event.target.value)}
-          placeholder={t("home.addAccount.namePlaceholder")}
-          value={form.name}
+          onChange={(event) => form.setDescription(event.target.value)}
+          placeholder={t("account.detail.addSub.descriptionPlaceholder")}
+          value={form.description}
         />
       </div>
 
       <div className="mt-5 text-[11px] font-bold tracking-[2px] text-text-secondary">
-        {t("home.addAccount.balance")}
+        {t("home.tx.category")}
+      </div>
+      <div className="mt-2.5 flex items-center gap-2.5 rounded-[20px] border border-border-subtle bg-surface px-3.5">
+        <input
+          className="flex-1 border-none bg-transparent py-3.5 font-numeric text-[13px] text-text-primary outline-none"
+          onChange={(event) => form.setCategory(event.target.value)}
+          placeholder={t("home.tx.categoryPlaceholder")}
+          value={form.category}
+        />
+      </div>
+      <div className="mt-2.5 flex flex-wrap gap-2">
+        {categoryChips.map((chip) => (
+          <button
+            className="rounded-full border border-border-subtle bg-surface px-3.5 py-2 font-numeric text-[11.5px] font-medium text-text-secondary transition-transform active:scale-[0.93]"
+            key={chip}
+            onClick={() => form.setCategory(chip)}
+            type="button"
+          >
+            {chip}
+          </button>
+        ))}
+      </div>
+
+      <div className="mt-5 text-[11px] font-bold tracking-[2px] text-text-secondary">
+        {t("account.detail.addSub.amount")}
       </div>
       <div className="mt-2.5 flex items-center gap-2.5 rounded-[20px] border border-border-subtle bg-surface px-3.5">
         <span className="font-numeric text-[13px] font-bold text-text-tertiary">
@@ -80,49 +89,29 @@ export function AddAccountSheet({
           className="flex-1 border-none bg-transparent py-3.5 font-numeric text-[13px] text-text-primary outline-none"
           inputMode="numeric"
           onChange={(event) =>
-            form.setBalance(event.target.value.replace(/[^0-9]/g, ""))
+            form.setAmount(event.target.value.replace(/[^0-9]/g, ""))
           }
           placeholder="0"
-          value={form.balance}
+          value={form.amount}
         />
       </div>
 
       <div className="mt-5 text-[11px] font-bold tracking-[2px] text-text-secondary">
-        {t("home.addAccount.type")}
+        {t("account.detail.addSub.type")}
       </div>
-      <div className="mt-2.5 grid grid-cols-2 gap-2.5">
-        {accountTypeOrder.map((type) => {
-          const visuals = accountTypeVisuals[type];
-          const active = type === form.type;
-
-          return (
-            <button
-              className={`flex items-center gap-2.5 rounded-[18px] border-[1.5px] p-3 text-left transition-transform active:scale-[0.97] ${
-                active
-                  ? "border-brand-500 bg-brand-500/10"
-                  : "border-border-subtle bg-surface"
-              }`}
-              key={type}
-              onClick={() => form.setType(type)}
-              type="button"
-            >
-              <span
-                className="flex h-[34px] w-[34px] flex-none items-center justify-center rounded-xl text-sm"
-                style={{ background: visuals.iconBg }}
-              >
-                {visuals.emoji}
-              </span>
-              <span className="text-[12.5px] font-semibold text-text-primary">
-                {t(accountTypeLabelKeys[type])}
-              </span>
-            </button>
-          );
-        })}
-      </div>
+      <SegmentedControl
+        className="mt-2.5"
+        onChange={form.setTransactionType}
+        options={[
+          { value: "DEBIT", label: t("account.detail.addSub.typeDebit") },
+          { value: "CREDIT", label: t("account.detail.addSub.typeCredit") },
+        ]}
+        value={form.transactionType}
+      />
 
       {form.error && (
         <div className="mt-3 text-xs text-danger">
-          {t("home.addAccount.error")}
+          {t("account.detail.addSub.error")}
         </div>
       )}
 
@@ -133,8 +122,8 @@ export function AddAccountSheet({
         type="button"
       >
         {form.isSubmitting
-          ? t("home.addAccount.submitting")
-          : t("home.addAccount.submit")}
+          ? t("account.detail.addSub.submitting")
+          : t("account.detail.addSub.submit")}
       </button>
     </BottomSheet>
   );

@@ -2,7 +2,12 @@ import { NextResponse, type NextRequest } from "next/server";
 import { routes } from "@/config/routes.config";
 import { SESSION_COOKIE_NAME } from "@/modules/auth/services/session.service";
 
-const protectedRoutes = [routes.dashboard, routes.users, routes.financeHome];
+const protectedRoutes = [
+  routes.dashboard,
+  routes.users,
+  routes.financeHome,
+  routes.account,
+];
 
 export function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
@@ -35,5 +40,11 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/users/:path*", "/home/:path*", "/login"],
+  matcher: [
+    "/dashboard/:path*",
+    "/users/:path*",
+    "/home/:path*",
+    "/account/:path*",
+    "/login",
+  ],
 };

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getAccountList } from "../services/account.service";
-import type { AccountRecord } from "../types/home.type";
+import type { AccountRecord } from "../types/account.type";
 
 type AccountListState = {
   accounts: AccountRecord[];

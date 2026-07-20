@@ -1,15 +1,16 @@
 import { accountTypeVisuals } from "@/features/dashboard/constants/account-type.constant";
-import type { AccountApiType } from "@/features/dashboard/types/account.type";
+import type { AccountApiType, AccountRecord } from "@/features/dashboard/types/account.type";
 import { usePreferences, type TranslationKey } from "@/modules/preferences";
 import { BottomSheet } from "@/shared/components/BottomSheet";
 import { CloseIcon } from "@/shared/components/icons";
 import { IconButton } from "@/shared/components/IconButton";
-import { useAddAccountForm } from "../hooks/useAddAccountForm";
+import { useEditAccountForm } from "../hooks/useEditAccountForm";
 
-type AddAccountSheetProps = {
+type EditAccountSheetProps = {
+  account: AccountRecord;
   open: boolean;
   onClose: () => void;
-  onCreated: () => void;
+  onUpdated: () => void;
 };
 
 const accountTypeOrder: AccountApiType[] = [
@@ -26,33 +27,26 @@ const accountTypeLabelKeys: Record<AccountApiType, TranslationKey> = {
   OTHER: "home.portfolio.type.OTHER",
 };
 
-export function AddAccountSheet({
+export function EditAccountSheet({
+  account,
   open,
   onClose,
-  onCreated,
-}: AddAccountSheetProps) {
+  onUpdated,
+}: EditAccountSheetProps) {
   const { t } = usePreferences();
-  const form = useAddAccountForm(() => {
-    onCreated();
-    onClose();
-  });
-
-  function handleClose() {
-    form.reset();
-    onClose();
-  }
+  const form = useEditAccountForm(account, onUpdated);
 
   return (
     <BottomSheet
-      onClose={handleClose}
+      onClose={onClose}
       open={open}
       panelClassName="inset-x-3 bottom-3 rounded-[32px] px-5 pb-5"
     >
       <div className="mt-4 flex items-center justify-between">
         <div className="text-[19px] font-bold text-text-primary">
-          {t("home.addAccount.title")}
+          {t("account.edit.title")}
         </div>
-        <IconButton ariaLabel="Close" onClick={handleClose} size={36}>
+        <IconButton ariaLabel="Close" onClick={onClose} size={36}>
           <CloseIcon size={14} />
         </IconButton>
       </div>
@@ -122,7 +116,7 @@ export function AddAccountSheet({
 
       {form.error && (
         <div className="mt-3 text-xs text-danger">
-          {t("home.addAccount.error")}
+          {t("account.edit.error")}
         </div>
       )}
 
@@ -132,9 +126,7 @@ export function AddAccountSheet({
         onClick={() => form.submit()}
         type="button"
       >
-        {form.isSubmitting
-          ? t("home.addAccount.submitting")
-          : t("home.addAccount.submit")}
+        {form.isSubmitting ? t("account.edit.submitting") : t("account.edit.submit")}
       </button>
     </BottomSheet>
   );

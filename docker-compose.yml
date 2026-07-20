@@ -1,0 +1,17 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_GATEWAY_URL: ${NEXT_PUBLIC_API_GATEWAY_URL:-}
+        NEXT_PUBLIC_FINANCE_SERVICE_URL: ${NEXT_PUBLIC_FINANCE_SERVICE_URL:-}
+        NEXT_PUBLIC_AUTH_URL: ${NEXT_PUBLIC_AUTH_URL:-}
+        NEXT_PUBLIC_AUTHORIZATION_URL: ${NEXT_PUBLIC_AUTHORIZATION_URL:-}
+        NEXT_PUBLIC_FILE_URL: ${NEXT_PUBLIC_FILE_URL:-}
+        NEXT_PUBLIC_NOTIFICATION_URL: ${NEXT_PUBLIC_NOTIFICATION_URL:-}
+    image: fe-finance-server:latest
+    container_name: fe-finance-server
+    restart: unless-stopped
+    ports:
+      - "8401:3000"

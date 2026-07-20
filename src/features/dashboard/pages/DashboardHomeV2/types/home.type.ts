@@ -1,12 +1,3 @@
-export type AccountApiType = "BANK" | "EWALLET" | "INVESTATION" | "OTHER";
-
-export type AccountRecord = {
-  id_account: number;
-  name: string;
-  balance: number;
-  type: AccountApiType;
-};
-
 export type QuickActionId = "transfer" | "topUp" | "pay" | "more";
 
 export type QuickAction = {
@@ -24,7 +15,5 @@ export type CashFlowBar = {
 };
 
 export type TxType = "expense" | "income" | "transfer" | "receivable";
-
-export type TransactionType = "DEBIT" | "CREDIT";
 
 export type HomeSheet = "menu" | "profile" | "transaction" | "account" | null;

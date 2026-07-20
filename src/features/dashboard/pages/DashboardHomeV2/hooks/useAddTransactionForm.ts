@@ -1,9 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { createTransaction } from "../services/transaction.service";
-import type { TransactionType, TxType } from "../types/home.type";
-import { useAccountList } from "./useAccountList";
+import { useAccountList } from "@/features/dashboard/hooks/useAccountList";
+import { createTransaction } from "@/features/dashboard/services/transaction.service";
+import type { TransactionType } from "@/features/dashboard/types/transaction.type";
+import type { TxType } from "../types/home.type";
 
 const transactionTypeByTxType: Record<TxType, TransactionType> = {
   expense: "DEBIT",

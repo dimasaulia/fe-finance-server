@@ -1,4 +1,4 @@
-import type { AccountApiType } from "../types/home.type";
+import type { AccountApiType } from "../types/account.type";
 
 export const accountTypeVisuals: Record<
   AccountApiType,
