@@ -1,13 +1,13 @@
 import { useRouter } from "next/navigation";
 import { routes } from "@/config/routes.config";
 import { useSession } from "@/modules/auth/hooks/useSession";
+import { getInitials } from "@/modules/auth/services/user-profile.service";
 import { usePreferences, type Language, type Theme } from "@/modules/preferences";
 import { BottomSheet } from "@/shared/components/BottomSheet";
 import { Avatar } from "@/shared/components/Avatar";
 import { ChevronRightIcon, CloseIcon } from "@/shared/components/icons";
 import { IconButton } from "@/shared/components/IconButton";
 import { SegmentedControl } from "@/shared/components/SegmentedControl";
-import { mockUser } from "../constants/user.constant";
 
 type ProfileSheetProps = {
   open: boolean;
@@ -16,7 +16,7 @@ type ProfileSheetProps = {
 
 export function ProfileSheet({ open, onClose }: ProfileSheetProps) {
   const { language, setLanguage, theme, setTheme, t } = usePreferences();
-  const { logout } = useSession();
+  const { logout, profile } = useSession();
   const router = useRouter();
 
   function handleSignOut() {
@@ -45,10 +45,13 @@ export function ProfileSheet({ open, onClose }: ProfileSheetProps) {
       <div className="flex-none px-5 pt-3.5">
         <div className="mx-auto h-[5px] w-11 rounded-full bg-border-glass" />
         <div className="mt-4 flex items-center gap-3.5">
-          <Avatar initials={mockUser.initials} size={54} />
+          <Avatar
+            initials={profile ? getInitials(profile.fullname) : "?"}
+            size={54}
+          />
           <div className="min-w-0 flex-1">
             <div className="text-[19px] font-bold text-text-primary">
-              {mockUser.fullName}
+              {profile?.fullname ?? profile?.username}
             </div>
             <div className="mt-0.5 font-numeric text-[10.5px] font-bold tracking-[2px] text-brand-700">
               {t("home.profile.plan")}

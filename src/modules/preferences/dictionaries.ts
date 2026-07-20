@@ -17,7 +17,7 @@ export const dictionaries = {
     "login.submit": "Sign In",
     "login.submitting": "Signing in...",
     "login.error.invalid": "Invalid username or password.",
-    "login.demoHint": "Demo account: dimas / 123456",
+    "login.error.network": "Couldn't reach the server. Please try again.",
 
     "dashboard.title": "Architecture health",
     "dashboard.description":
@@ -134,7 +134,7 @@ export const dictionaries = {
     "login.submit": "Masuk",
     "login.submitting": "Sedang masuk...",
     "login.error.invalid": "Username atau password salah.",
-    "login.demoHint": "Akun demo: dimas / 123456",
+    "login.error.network": "Tidak dapat menghubungi server. Silakan coba lagi.",
 
     "dashboard.title": "Kesehatan arsitektur",
     "dashboard.description":

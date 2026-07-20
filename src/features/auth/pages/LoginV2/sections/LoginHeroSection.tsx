@@ -10,7 +10,7 @@ export function LoginHeroSection() {
       className="flex flex-col items-center text-center"
       style={{ animation: "fade-up 0.5s ease both" }}
     >
-      <Avatar ariaLabel={appConfig.name} initials="OS" size={56} />
+      <Avatar ariaLabel={appConfig.name} initials="FiM" size={56} />
       <h1 className="mt-5 text-2xl font-bold text-text-primary">
         {t("login.title")}
       </h1>

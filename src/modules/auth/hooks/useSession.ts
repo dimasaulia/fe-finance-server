@@ -1,12 +1,9 @@
 "use client";
 
 import { useCallback, useSyncExternalStore } from "react";
-import {
-  clearSessionCookie,
-  getSessionCookie,
-  setSessionCookie,
-  type Session,
-} from "@/modules/auth/services/session.service";
+import { login as loginRequest, logout as logoutRequest } from "@/modules/auth/services/auth.service";
+import { getAuthToken } from "@/modules/auth/services/session.service";
+import { getUserProfile } from "@/modules/auth/services/user-profile.service";
 
 const listeners = new Set<() => void>();
 
@@ -21,25 +18,25 @@ function subscribe(listener: () => void) {
 }
 
 export function useSession() {
-  const session = useSyncExternalStore(
-    subscribe,
-    getSessionCookie,
-    () => null,
-  );
+  const token = useSyncExternalStore(subscribe, getAuthToken, () => null);
+  const profile = useSyncExternalStore(subscribe, getUserProfile, () => null);
 
-  const login = useCallback((nextSession: Session) => {
-    setSessionCookie(nextSession);
+  const login = useCallback(async (usernameOrEmail: string, password: string) => {
+    const nextProfile = await loginRequest(usernameOrEmail, password);
     emitSessionChange();
+
+    return nextProfile;
   }, []);
 
   const logout = useCallback(() => {
-    clearSessionCookie();
+    logoutRequest();
     emitSessionChange();
   }, []);
 
   return {
-    session,
-    isAuthenticated: session !== null,
+    token,
+    profile,
+    isAuthenticated: token !== null,
     login,
     logout,
   };

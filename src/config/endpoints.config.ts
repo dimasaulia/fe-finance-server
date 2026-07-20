@@ -1,7 +1,7 @@
 export const endpoints = {
   auth: {
     session: "/auth/session",
-    login: "/auth/login",
+    login: "/api/user/v1/login",
     logout: "/auth/logout",
   },
   authorization: {

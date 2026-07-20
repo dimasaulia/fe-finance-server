@@ -1,7 +1,8 @@
+import { useSession } from "@/modules/auth/hooks/useSession";
+import { getInitials } from "@/modules/auth/services/user-profile.service";
 import { usePreferences } from "@/modules/preferences";
 import { Avatar } from "@/shared/components/Avatar";
 import { IconButton } from "@/shared/components/IconButton";
-import { mockUser } from "../constants/user.constant";
 
 type HomeHeaderProps = {
   onOpenProfile: () => void;
@@ -9,6 +10,10 @@ type HomeHeaderProps = {
 
 export function HomeHeader({ onOpenProfile }: HomeHeaderProps) {
   const { t } = usePreferences();
+  const { profile } = useSession();
+
+  const displayName = profile?.fullname.split(" ")[0] ?? profile?.username ?? "";
+  const initials = profile ? getInitials(profile.fullname) : "?";
 
   return (
     <div
@@ -17,8 +22,8 @@ export function HomeHeader({ onOpenProfile }: HomeHeaderProps) {
     >
       <div className="flex items-center gap-3">
         <Avatar
-          ariaLabel={mockUser.fullName}
-          initials={mockUser.initials}
+          ariaLabel={profile?.fullname ?? displayName}
+          initials={initials}
           onClick={onOpenProfile}
         />
         <div>
@@ -26,7 +31,7 @@ export function HomeHeader({ onOpenProfile }: HomeHeaderProps) {
             {t("home.greeting")} 🌿
           </div>
           <div className="text-base font-bold font-heading text-text-primary">
-            {mockUser.firstName}
+            {displayName}
           </div>
         </div>
       </div>

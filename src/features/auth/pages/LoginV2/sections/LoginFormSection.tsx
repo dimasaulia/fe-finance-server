@@ -11,7 +11,7 @@ export function LoginFormSection() {
     setPassword,
     showPassword,
     toggleShowPassword,
-    hasError,
+    errorMessage,
     submitting,
     handleSubmit,
   } = useLoginForm();
@@ -121,9 +121,9 @@ export function LoginFormSection() {
           </div>
         </label>
 
-        {hasError && (
+        {errorMessage && (
           <p className="rounded-[14px] bg-danger-bg px-3.5 py-2.5 text-[12.5px] font-semibold text-danger">
-            {t("login.error.invalid")}
+            {errorMessage}
           </p>
         )}
 
@@ -134,10 +134,6 @@ export function LoginFormSection() {
         >
           {submitting ? t("login.submitting") : t("login.submit")}
         </button>
-
-        <p className="text-center font-numeric text-[11px] text-text-tertiary">
-          {t("login.demoHint")}
-        </p>
       </form>
     </GlassCard>
   );
