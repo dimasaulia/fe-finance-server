@@ -33,4 +33,4 @@ export type CashFlowBar = {
 
 export type TxType = "expense" | "income" | "transfer" | "receivable";
 
-export type HomeSheet = "menu" | "profile" | "transaction" | null;
+export type HomeSheet = "menu" | "profile" | "transaction" | "account" | null;

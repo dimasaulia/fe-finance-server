@@ -81,7 +81,15 @@ export const dictionaries = {
       "Expense, income, transfer, receivable",
     "home.addMenu.card.title": "Add Card",
     "home.addMenu.card.description": "Add a new account/card",
-    "home.addMenu.comingSoon": "SOON",
+
+    "home.addAccount.title": "Add Account",
+    "home.addAccount.name": "ACCOUNT NAME",
+    "home.addAccount.namePlaceholder": "e.g. BCA Savings",
+    "home.addAccount.balance": "INITIAL BALANCE",
+    "home.addAccount.type": "ACCOUNT TYPE",
+    "home.addAccount.submit": "Create Account",
+    "home.addAccount.submitting": "Creating...",
+    "home.addAccount.error": "Couldn't create the account. Please try again.",
 
     "home.profile.plan": "PREMIUM / EST. 2021",
     "home.profile.accountSettings": "ACCOUNT SETTINGS",
@@ -205,7 +213,15 @@ export const dictionaries = {
       "Pengeluaran, pemasukan, transfer, piutang",
     "home.addMenu.card.title": "Add Card",
     "home.addMenu.card.description": "Tambah akun / kartu baru",
-    "home.addMenu.comingSoon": "SEGERA",
+
+    "home.addAccount.title": "Tambah Akun",
+    "home.addAccount.name": "NAMA AKUN",
+    "home.addAccount.namePlaceholder": "cth. BCA Tabungan",
+    "home.addAccount.balance": "SALDO AWAL",
+    "home.addAccount.type": "JENIS AKUN",
+    "home.addAccount.submit": "Buat Akun",
+    "home.addAccount.submitting": "Membuat...",
+    "home.addAccount.error": "Gagal membuat akun. Silakan coba lagi.",
 
     "home.profile.plan": "PREMIUM / EST. 2021",
     "home.profile.accountSettings": "PENGATURAN AKUN",

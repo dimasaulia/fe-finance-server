@@ -14,12 +14,14 @@ const viewToSheet: Record<string, HomeSheet> = {
   profile: "profile",
   "chose-add": "menu",
   "add-transaction": "transaction",
+  "add-account": "account",
 };
 
 const sheetToView: Record<SheetKey, string> = {
   profile: "profile",
   menu: "chose-add",
   transaction: "add-transaction",
+  account: "add-account",
 };
 
 function isTxType(value: string | null): value is TxType {
@@ -88,6 +90,7 @@ export function useHomeSheets() {
     openProfile: () => openSheet("profile"),
     openTransaction: (initialType: TxType = DEFAULT_TX_TYPE) =>
       openSheet("transaction", { type: initialType }),
+    openAccount: () => openSheet("account"),
     close,
   };
 }

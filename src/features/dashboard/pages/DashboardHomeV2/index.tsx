@@ -1,6 +1,7 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
+import { AddAccountSheet } from "./components/AddAccountSheet";
 import { AddMenuSheet } from "./components/AddMenuSheet";
 import { AddTransactionSheet } from "./components/AddTransactionSheet";
 import { ProfileSheet } from "./components/ProfileSheet";
@@ -15,6 +16,7 @@ import { WeeklyCashFlowCard } from "./sections/WeeklyCashFlowCard";
 
 function DashboardHomeV2Content() {
   const sheets = useHomeSheets();
+  const [accountsRefreshKey, setAccountsRefreshKey] = useState(0);
 
   return (
     <div className="relative min-h-dvh overflow-hidden bg-app-bg font-heading">
@@ -52,13 +54,14 @@ function DashboardHomeV2Content() {
         <LiquidityChips />
         <QuickActions />
         <WeeklyCashFlowCard />
-        <PortfolioList />
+        <PortfolioList refreshKey={accountsRefreshKey} />
       </div>
 
       <HomeBottomNav onAdd={sheets.openMenu} />
 
       <AddMenuSheet
         onClose={sheets.close}
+        onOpenAccount={sheets.openAccount}
         onOpenTransaction={sheets.openTransaction}
         open={sheets.activeSheet === "menu"}
       />
@@ -68,6 +71,11 @@ function DashboardHomeV2Content() {
         onTxTypeChange={sheets.setTxType}
         open={sheets.activeSheet === "transaction"}
         txType={sheets.txType}
+      />
+      <AddAccountSheet
+        onClose={sheets.close}
+        onCreated={() => setAccountsRefreshKey((key) => key + 1)}
+        open={sheets.activeSheet === "account"}
       />
     </div>
   );

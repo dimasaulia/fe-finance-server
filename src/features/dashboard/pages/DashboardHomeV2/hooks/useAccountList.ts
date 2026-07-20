@@ -10,7 +10,8 @@ type AccountListState = {
   error: string | null;
 };
 
-export function useAccountList() {
+/** `refreshKey` lets callers force a refetch (e.g. after creating an account) by bumping it. */
+export function useAccountList(refreshKey = 0) {
   const [state, setState] = useState<AccountListState>({
     accounts: [],
     isLoading: true,
@@ -42,7 +43,7 @@ export function useAccountList() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [refreshKey]);
 
   return state;
 }

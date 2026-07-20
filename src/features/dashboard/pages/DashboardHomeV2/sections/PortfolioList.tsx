@@ -4,9 +4,13 @@ import { formatCompactCurrency } from "@/shared/utils/currency";
 import { accountTypeVisuals } from "../constants/account-type.constant";
 import { useAccountList } from "../hooks/useAccountList";
 
-export function PortfolioList() {
+type PortfolioListProps = {
+  refreshKey?: number;
+};
+
+export function PortfolioList({ refreshKey = 0 }: PortfolioListProps) {
   const { t } = usePreferences();
-  const { accounts, isLoading, error } = useAccountList();
+  const { accounts, isLoading, error } = useAccountList(refreshKey);
 
   return (
     <div>

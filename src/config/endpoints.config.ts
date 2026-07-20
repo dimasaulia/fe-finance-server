@@ -14,5 +14,6 @@ export const endpoints = {
   },
   account: {
     list: "/api/account/v1",
+    create: "/api/account/v1",
   },
 } as const;

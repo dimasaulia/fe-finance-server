@@ -7,12 +7,14 @@ type AddMenuSheetProps = {
   open: boolean;
   onClose: () => void;
   onOpenTransaction: () => void;
+  onOpenAccount: () => void;
 };
 
 export function AddMenuSheet({
   open,
   onClose,
   onOpenTransaction,
+  onOpenAccount,
 }: AddMenuSheetProps) {
   const { t } = usePreferences();
 
@@ -51,23 +53,22 @@ export function AddMenuSheet({
       </button>
 
       <button
-        className="mt-2.5 flex w-full cursor-default items-center gap-3.5 rounded-[22px] bg-border-subtle/40 p-4 text-left"
+        className="mt-2.5 flex w-full items-center gap-3.5 rounded-[22px] bg-brand-500/10 p-4 text-left transition-transform active:scale-[0.97]"
+        onClick={() => onOpenAccount()}
         type="button"
       >
-        <span className="flex h-[46px] w-[46px] flex-none items-center justify-center rounded-2xl bg-border-subtle text-xl opacity-60">
+        <span className="flex h-[46px] w-[46px] flex-none items-center justify-center rounded-2xl bg-brand-500/18 text-xl">
           💳
         </span>
         <span className="flex-1">
-          <span className="block text-[15px] font-bold text-text-tertiary">
+          <span className="block text-[15px] font-bold text-text-primary">
             {t("home.addMenu.card.title")}
           </span>
-          <span className="mt-0.5 block text-xs text-text-tertiary">
+          <span className="mt-0.5 block text-xs text-text-secondary">
             {t("home.addMenu.card.description")}
           </span>
         </span>
-        <span className="rounded-full bg-border-subtle px-2.5 py-1 font-numeric text-[9.5px] font-bold text-text-tertiary">
-          {t("home.addMenu.comingSoon")}
-        </span>
+        <ArrowRightIcon className="text-brand-700" size={17} />
       </button>
     </BottomSheet>
   );
